@@ -27,21 +27,24 @@ class Discriminator(nn.Module):
                                     ]))
 
         self.layer4 = nn.Sequential(OrderedDict([
-            ("conv3", nn.Conv2d(128, 256, 4, 2, 1, bias=False)),
-            ("bn_3", nn.BatchNorm2d(256)),
-            ("relu_3",nn.LeakyReLU(0.2, inplace=True))
+            ("conv4", nn.Conv2d(128, 256, 4, 2, 1, bias=False)),
+            ("bn_4", nn.BatchNorm2d(256)),
+            ("relu_4",nn.LeakyReLU(0.2, inplace=True))
                                     ]))
 
         self.final_conv = nn.Conv2d(256, 1, 4, 1, 0, bias=False)
 
-        # self.layer1.conv1.weight = nn.Parameter(torch.rand(32, 3, 4, 4))
-        # self.layer2.conv2.weight = nn.Parameter(torch.rand(64, 32, 4, 4))
-        # self.layer3.conv3.weight = nn.Parameter(torch.rand(128, 64, 4, 4))
-        # self.layer4.conv4.weight = nn.Parameter(torch.rand(256, 128, 4, 4))
-        # self.final_conv.weight = nn.Parameter(torch.rand(256,1,4,4))
+        nn.init.normal_(self.layer1.conv1.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer2.conv2.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer3.conv3.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer4.conv4.weight, 0.0, 0.02)
+        nn.init.normal_(self.final_conv.weight, 0.0, 0.02)
 
     def forward(self, x):
-        x = self.main(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
         x = self.final_conv(x).squeeze()
         return x
 

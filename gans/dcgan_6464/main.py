@@ -15,8 +15,8 @@ from torch.utils.data import Dataset, DataLoader, TensorDataset
 from torchvision import transforms, datasets
 
 ##model
-from gans.dcgan_6464 import Discriminator
-from gans.dcgan_6464 import Generator
+from Discriminator import Discriminator
+from Generator import dc_Generator
 
 
 class MyDataset(torch.utils.data.Dataset):
@@ -53,9 +53,9 @@ if __name__ == "__main__":
     dataset = MyDataset(img_path, transform=transform)
     data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-    device = "cuda:1"
+    device = "cuda:0"
 
-    model_G = Generator().to(device)
+    model_G = dc_Generator().to(device)
     model_D = Discriminator().to(device)
     loss_f = nn.BCEWithLogitsLoss().to(device)
 

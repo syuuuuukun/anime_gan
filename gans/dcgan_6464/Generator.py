@@ -1,32 +1,40 @@
 import torch.nn as nn
+import torch
+from collections import OrderedDict
 
 class dc_Generator(nn.Module):
 
     def __init__(self, sa_block):
         super().__init__()
-        self.main = nn.Sequential(
-            nn.Linear(100,4*4*512),
-            Reshape(512,4,4),
-            
-            nn.ConvTranspose2d(512, 256, 4, 1, 0, bias=False),
-            nn.BatchNorm2d(256),
-            nn.LeakyReLU(0.2, inplace=True),
 
-            nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2, inplace=True),
+        self.layer1 = nn.Sequential(OrderedDict([
+            ("fc", nn.Linear(100,4*4*512)),
+            ("reshape" , Reshape(512,4,4)),
+            ("conv1", nn.ConvTranspose2d(512, 256, 4, 2, 1, bias=False)),
+            ("bn_1", nn.BatchNorm2d(256)),
+            ("relu1", nn.LeakyReLU(0.2, inplace=True))]))
 
-            nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(64),
-            nn.LeakyReLU(0.2, inplace=True),
+        self.layer2 = nn.Sequential(OrderedDict([
+            ("conv2", nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False)),
+            ("bn_2" , nn.BatchNorm2d(128)),
+            ("relu_2",nn.LeakyReLU(0.2, inplace=True))
+                                    ]))
 
-            nn.ConvTranspose2d(64, 32, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(32),
-            nn.LeakyReLU(0.2, inplace=True),
+        self.layer3 = nn.Sequential(OrderedDict([
+            ("conv3", nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False)),
+            ("bn_3" , nn.BatchNorm2d(128)),
+            ("relu_3",nn.LeakyReLU(0.2, inplace=True))
+                                    ]))
 
-            nn.ConvTranspose2d(32, 3, 4, 2, 1, bias=False),
-            nn.Tanh()
-        )
+        self.layer4 = nn.Sequential(OrderedDict([
+            ("conv4", nn.ConvTranspose2d(64, 3, 4, 2, 1, bias=False)),
+            ("Tanh" , nn.Tanh())
+                                    ]))
+
+        nn.init.normal_(self.layer1.conv1.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer2.conv2.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer3.conv3.weight, 0.0, 0.02)
+        nn.init.normal_(self.layer4.conv4.weight, 0.0, 0.02)
 
     def forward(self, x):
         return self.main(x)
