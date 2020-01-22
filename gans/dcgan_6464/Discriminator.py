@@ -5,7 +5,7 @@ import torch
 import torch.distributions as tdist
 
 class Discriminator(nn.Module):
-    def __init__(self, sa_block):
+    def __init__(self):
         super().__init__()
 
 
@@ -48,4 +48,17 @@ class Discriminator(nn.Module):
         x = self.final_conv(x).squeeze()
         return x
 
+
+class AddNoise(nn.Module):
+    def __init__(self, sigma, train, device):
+        super().__init__()
+        self.sigma = sigma
+        self.train = train
+        self.device = device
+
+    def forward(self, x):
+        if self.train:
+            return x + self.sigma * torch.randn(x.shape).to(self.device)
+        else:
+            return x
 

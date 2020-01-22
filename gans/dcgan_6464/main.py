@@ -39,6 +39,7 @@ class MyDataset(torch.utils.data.Dataset):
             img_l = self.transform(img_l)
             img_h = self.transform(img_h)
         return img_l / 255, img_h, label
+        
 
 
 if __name__ == "__main__":
@@ -70,10 +71,10 @@ if __name__ == "__main__":
         losses_G = []
         losses_D = []
         for data in data_loader:
-            b_size = data[0].shape[0]
+            b_size = data.shape[0]
 
             # Genrator
-            z = torch.randn(b_size, 100).to(device)
+            z = torch.rand(b_size, 100).to(device)
             fake_img = model_G(z)
             fake_img_tensor = fake_img.detach()
 

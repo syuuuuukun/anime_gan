@@ -2,9 +2,9 @@ import torch.nn as nn
 import torch
 from collections import OrderedDict
 
-class dc_Generator(nn.Module):
 
-    def __init__(self, sa_block):
+class dc_Generator(nn.Module):
+    def __init__(self):
         super().__init__()
 
         self.layer1 = nn.Sequential(OrderedDict([
@@ -22,7 +22,7 @@ class dc_Generator(nn.Module):
 
         self.layer3 = nn.Sequential(OrderedDict([
             ("conv3", nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False)),
-            ("bn_3" , nn.BatchNorm2d(128)),
+            ("bn_3" , nn.BatchNorm2d(64)),
             ("relu_3",nn.LeakyReLU(0.2, inplace=True))
                                     ]))
 
@@ -37,7 +37,12 @@ class dc_Generator(nn.Module):
         nn.init.normal_(self.layer4.conv4.weight, 0.0, 0.02)
 
     def forward(self, x):
-        return self.main(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        return x
+
 
 class Reshape(nn.Module):
     def __init__(self,c_size,h_size,w_size):
