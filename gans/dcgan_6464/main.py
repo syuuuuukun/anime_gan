@@ -18,7 +18,6 @@ from torchvision import transforms, datasets
 from Discriminator import Discriminator
 from Generator import dc_Generator
 from my_utils import gan_img_renorm,gp_loss
-from sync_batchnorm import convert_model, DataParallelWithCallback
 
 
 
@@ -66,11 +65,11 @@ if __name__ == "__main__":
     model_D = Discriminator()
     loss_f = nn.BCEWithLogitsLoss()
 
-    if multi_gpu:
-        _ = convert_model(model_D)
-        _ = convert_model(model_G)
-        model_D = DataParallelWithCallback(model_D)
-        model_G = DataParallelWithCallback(model_G)
+    # if multi_gpu:
+    #     _ = convert_model(model_D)
+    #     _ = convert_model(model_G)
+    #     model_D = DataParallelWithCallback(model_D)
+    #     model_G = DataParallelWithCallback(model_G)
 
     model_G = model_G.to(device)
     model_D = model_D.to(device)
