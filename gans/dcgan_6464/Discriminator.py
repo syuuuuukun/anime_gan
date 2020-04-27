@@ -40,6 +40,18 @@ class Discriminator(nn.Module):
         nn.init.normal_(self.layer4.conv4.weight, 0.0, 0.02)
         nn.init.normal_(self.final_conv.weight, 0.0, 0.02)
 
+        nn.init.normal_(self.layer1.bn_1.weight, 1.0, 0.02)
+        nn.init.constant_(self.layer1.bn_1.bias, 0.0)
+
+        nn.init.normal_(self.layer2.bn_2.weight, 1.0, 0.02)
+        nn.init.constant_(self.layer2.bn_2.bias, 0.0)
+
+        nn.init.normal_(self.layer3.bn_3.weight, 1.0, 0.02)
+        nn.init.constant_(self.layer3.bn_3.bias, 0.0)
+
+        nn.init.normal_(self.layer3.bn_3.weight, 1.0, 0.02)
+        nn.init.constant_(self.layer3.bn_3.bias, 0.0)
+
     def forward(self, x):
         x = self.layer1(x)
         x = self.layer2(x)
