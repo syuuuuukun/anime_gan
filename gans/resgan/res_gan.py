@@ -12,7 +12,7 @@ import numpy as np
 import cv2
 from PIL import Image
 import matplotlib.pyplot as plt
-from sync_batchnorm import convert_model, DataParallelWithCallback
+# from sync_batchnorm import convert_model, DataParallelWithCallback
 
 from my_utils import gan_img_renorm, gp_loss, log_ploter
 from model import *
@@ -105,11 +105,11 @@ if __name__ == "__main__":
     model_G.apply(weights_init_normal)
     model_D.apply(weights_init_normal)
 
-    if multi_gpu:
-        _ = convert_model(model_D)
-        _ = convert_model(model_G)
-        model_D = DataParallelWithCallback(model_D)
-        model_G = DataParallelWithCallback(model_G)
+    # if multi_gpu:
+    #     _ = convert_model(model_D)
+    #     _ = convert_model(model_G)
+    #     model_D = DataParallelWithCallback(model_D)
+    #     model_G = DataParallelWithCallback(model_G)
 
     model_D = model_D.to(device)
     model_G = model_G.to(device)
