@@ -1,4 +1,4 @@
-#　Stylegan2生成結果
+# Stylegan2生成結果
 
 [参考にしたコード](https://github.com/rosinality/stylegan2-pytorch)
 
