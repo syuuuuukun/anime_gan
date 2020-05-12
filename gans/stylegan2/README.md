@@ -11,7 +11,7 @@
 試したこと
 （セグメンテーション画像みたいなのを入れたら解決できるのではないか）
 
-Generator: seg画像 -> 5層Conv2d -> pose_x -> (pose_x + noise)　-> Ganerator -> Fake画像
+Generator: seg画像 -> 5層Conv2d -> pose_x -> (pose_x + noise)　-> Ganerator -> Fake画像 \
 Discriminator: 画像 -> Discriminator -> 画像embedding + seg画像embedding -> adv_loss
 (projectionGANみたいな)
 
